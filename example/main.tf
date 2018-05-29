@@ -30,12 +30,12 @@ resource "random_string" "unique" {
 
 # Send a notification to the topic
 module "notify" {
-  source         = "../"
-  namespace      = "cp"
-  stage          = "staging"
-  name           = "lambda-trigger-automation"
+  source        = "../"
+  namespace     = "cp"
+  stage         = "staging"
+  name          = "lambda-trigger-automation"
   sns_topic_arn = "${aws_sns_topic.default.arn}"
-  trigger_hash   = "${random_string.unique.result}"
+  trigger_hash  = "${random_string.unique.result}"
 }
 
 # Output the outputs

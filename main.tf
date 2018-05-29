@@ -38,6 +38,7 @@ resource "aws_cloudwatch_event_target" "sns" {
   target_id  = "SendToSNS"
   arn        = "${var.sns_topic_arn}"
   depends_on = ["aws_cloudwatch_event_rule.default"]
+  input      = "${var.sns_message_override}"
 }
 
 resource "aws_sns_topic_policy" "default" {
