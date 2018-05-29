@@ -82,5 +82,4 @@ module "notify" {
 | `trigger_hash`                  |                       ``                       | A hash of any value that changes only when you want to notify the SNS topic                            |   Yes    |
 | `sns_message_override`          |                      `""`                      | AAn SNS JSON payload to pass to SNS 																				                            |    No    |
 | `add_events_to_sns_policy`      |                    `"true"`                    | Updates the SNS policy on the topic to allow CloudWatch Events to notify the topic                     |    No    |
-|:--------------------------------|:----------------------------------------------:|:-------------------------------------------------------------------------------------------------------|:--------:|
 
