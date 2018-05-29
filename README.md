@@ -24,12 +24,14 @@ When the value of the parameter created or updated, the SNS Topic is notified.
 ## Example 1: Create Lambda Function, make SNS topic, subscribe to it and trigger it
 
 ```hcl
+# Zip up Lambda Function
 data "archive_file" "lambda_update_asg" {
   type        = "zip"
   source_file = "${path.module}/lambda/lambda-update-autoscaling-groups.py"
   output_path = "${path.module}/lambda/lambda-update-autoscaling-groups.zip"
 }
 
+# Release Lambda Function
 resource "aws_lambda_function" "lambda_update_asg" {
   filename         = "${data.archive_file.lambda_update_asg.output_path}"
   function_name    = "${module.label.id}-update-asg"
@@ -42,18 +44,20 @@ resource "aws_lambda_function" "lambda_update_asg" {
 
   kms_key_arn = "${var.kms_key_arn}"
 }
-# Make a topic
+
+# Make SNS topic
 resource "aws_sns_topic" "default" {
   name_prefix = "Automation-Trigger"
 }
 
+# Subscribe the Lambda Function to the Topic
 resource "aws_sns_topic_subscription" "lambda_update_asg" {
   topic_arn = "${aws_sns_topic.default.arn}"
   protocol  = "lambda"
   endpoint  = "${aws_lambda_function.lambda_update_asg.arn}"
 }
 
-# Send a notification to the topic
+# Send a notification to the topic <--- This Module
 module "notify" {
   source        = "git::https://github.com/bitflight-public/terraform-aws-sns-topic-notify.git?ref=master"
   namespace     = "cp"
